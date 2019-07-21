@@ -407,7 +407,7 @@ char* sign(const char* data)
     // "Signing message
     if ((ret = mbedtls_ecdsa_write_signature(mbedtls_pk_ec(ctx_sign), 6,
             hash_data, sizeof(hash_data), sig, &sig_len, mbedtls_ctr_drbg_random, NULL)) != 0){
-        printf("[error] mbedtls_ecdsa_genkey returned %d\n", ret);
+        printf("[error] mbedtls_ecdsa_write_signature returned %d\n", ret);
         return(1);
     }
 
