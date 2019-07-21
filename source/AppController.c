@@ -370,11 +370,15 @@ static void AppControllerFire(void* pvParameters)
 //        	memset(memo,0,sizeof(char)*100);
 //        	sprintf(memo, "{ \"name\":\"BOSCH_IoT\",\"content\":\"%ld\" }", (long int) bme280.temperature);
 
-        	char * memo = upload((char*)bme280.temperature);
+          	char str[10];
+          	sprintf(str, "%d", bme280.temperature);
 
-        	HTTPRestClientPostInfoSign.Payload = memo;
+        	char * memo = upload(str);
+
+
+        	HTTPRestClientPostInfo.Payload = memo;
         	printf("memo:%s\r\n", memo);
-        	HTTPRestClientPostInfoSign.PayloadLength = (strlen(memo)),
+        	HTTPRestClientPostInfo.PayloadLength = (strlen(memo)),
             retcode = HTTPRestClient_Post(&HTTPRestClientConfigInfo, &HTTPRestClientPostInfo, APP_RESPONSE_FROM_HTTP_SERVER_POST_TIMEOUT);
         	free(memo);
         }

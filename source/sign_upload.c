@@ -347,7 +347,8 @@ char* createMemoInfo(const char * didinfo, const char * signedInfo, const char *
     int len = 30 + strlen(binStr) + strlen(publicKey) + strlen(signedInfo);
     printf("memo len: %d\n", len);
 
-    memo = malloc(len);
+    memo = malloc(len+ 1);
+    memset(memo, 0, (len +1)*sizeof(char));
     if (!memo) goto exit;
 
     sprintf(memo, "{\"msg\":\"%s\",\"pub\":\"%s\",\"sig\":\"%s\"}", binStr, publicKey, signedInfo);
@@ -432,8 +433,10 @@ char* sign(const char* data)
 char* upload(const char* value)
 {
     char* didinfo = createDidInfo(did, "BOSCH_IoT", value);
+    printf("[upload] upload createDidInfo:%s! \n", didinfo);
 	char* signedInfo = sign(didinfo);
-	char* memo = createMemoInfo(didinfo, signedInfo, pub_key);
+	char* bytesign= bytes_to_hex(signedInfo, 64);
+	char* memo = createMemoInfo(didinfo, bytesign, pub_key);
 	free(didinfo);
 	free(signedInfo);
 	return memo;
